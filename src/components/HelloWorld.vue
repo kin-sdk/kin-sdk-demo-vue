@@ -1,56 +1,91 @@
 <template>
   <div>
     <div class="hello">Testing Kin</div>
-    <button @click="resolve">Resolve</button>
-    <button @click="create">Create</button>
-    <button @click="sendKin">Send</button>
+    <div>
+      <button @click="create">Create</button>
+      <pre>{{ step1 | json }}</pre>
+    </div>
+    <div>
+      <button @click="resolve">Resolve</button>
+      <pre>{{ step2 | json }}</pre>
+    </div>
+    <div>
+      <button @click="airdrop">Airdrop</button>
+      <pre>{{ step3 | json }}</pre>
+    </div>
+    <div>
+      <button @click="sendKin">Send</button>
+      <pre>{{ step4 | json }}</pre>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 
-import { KinClient, KinProd, Wallet } from '@kin-sdk/client'
+import { createWallet, KinClient, KinTest, Wallet } from '@kin-sdk/client'
 import Vue from 'vue'
 
-const client = new KinClient(KinProd);
-const account: Wallet = KinClient.createWallet("create", { name: "Account 1" });
+const client = new KinClient(KinTest)
+const account: Wallet = createWallet('create', { name: 'Account 1' })
 
-
-const destination = "Don8L4DTVrUrRAcVTsFoCRqei5Mokde3CV3K9Ut4nAGZ";
+const destination = 'Don8L4DTVrUrRAcVTsFoCRqei5Mokde3CV3K9Ut4nAGZ'
 
 export default Vue.extend({
-  name: "HelloWorld",
+  name: 'HelloWorld',
   methods: {
-    async sendKin() {
-      const response = await client.submitPayment({
-        secret: account.secret!,
-        tokenAccount: account.publicKey!,
-        amount: "1",
-        destination,
-        memo: "One Kin for Donald",
-      });
-      console.log(response);
-    },
     async create() {
-      const [result, error] = await client.createAccount(account.secret!);
+      const [result, error] = await client.createAccount(account.secret!)
       if (error) {
-        console.error(error);
+        console.error(error)
       } else {
-        console.log(result);
+        console.log(result)
+        this.$props.step1 = JSON.stringify(result)
       }
     },
     async resolve() {
-      const [result, error] = await client.resolveTokenAccounts(account.publicKey!);
+      const [result, error] = await client.resolveTokenAccounts(account.publicKey!)
       if (error) {
-        console.error(error);
+        console.error(error)
       } else {
-        console.log(result);
+        console.log(result)
+        this.$props.step2 = JSON.stringify(result)
       }
+    },
+    async airdrop() {
+      const [result, error] = await client.requestAirdrop(account.publicKey!, '1000')
+      if (error) {
+        console.error(error)
+      } else {
+        console.log(result)
+        this.$props.step3 = JSON.stringify(result)
+      }
+    },
+    async sendKin() {
+      const [result, error] = await client.submitPayment({
+        secret: account.secret!,
+        tokenAccount: account.publicKey!,
+        amount: '10',
+        destination,
+        memo: 'One Kin for Donald',
+      })
+      if (error) {
+        console.error(error)
+      } else {
+        console.log(result)
+        this.$props.step4 = JSON.stringify(result)
+      }
+
     },
   },
   props: {
-    msg: String,
+    step1: String,
+    step2: String,
+    step3: String,
+    step4: String,
   },
-});
+  filters: {
+    json: (value: string|any) => JSON.stringify(value, null, 2)
+  }
+})
 </script>
