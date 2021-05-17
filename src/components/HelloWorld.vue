@@ -44,7 +44,7 @@ export default Vue.extend({
       }
     },
     async resolve() {
-      const [result, error] = await client.resolveTokenAccounts(account.publicKey!)
+      const [result, error] = await client.getBalances(account.publicKey!)
       if (error) {
         console.error(error)
       } else {

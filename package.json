@@ -8,7 +8,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "@kin-sdk/client": "^0.4.0",
+    "@kin-sdk/client": "^0.5.0",
     "core-js": "^3.6.5",
     "vue": "^2.6.11"
   },
