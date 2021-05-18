@@ -3,19 +3,19 @@
     <div class="hello">Testing Kin</div>
     <div>
       <button @click="create">Create</button>
-      <pre>{{ step1 | json }}</pre>
+      <pre>{{ step1 | pretty }}</pre>
     </div>
     <div>
       <button @click="resolve">Resolve</button>
-      <pre>{{ step2 | json }}</pre>
+      <pre>{{ step2 | pretty }}</pre>
     </div>
     <div>
       <button @click="airdrop">Airdrop</button>
-      <pre>{{ step3 | json }}</pre>
+      <pre>{{ step3 | pretty }}</pre>
     </div>
     <div>
       <button @click="sendKin">Send</button>
-      <pre>{{ step4 | json }}</pre>
+      <pre>{{ step4 | pretty }}</pre>
     </div>
   </div>
 </template>
@@ -40,7 +40,7 @@ export default Vue.extend({
         console.error(error)
       } else {
         console.log(result)
-        this.$props.step1 = JSON.stringify(result)
+        this.step1 = result;
       }
     },
     async resolve() {
@@ -49,7 +49,7 @@ export default Vue.extend({
         console.error(error)
       } else {
         console.log(result)
-        this.$props.step2 = JSON.stringify(result)
+        this.step2 = result;
       }
     },
     async airdrop() {
@@ -58,7 +58,7 @@ export default Vue.extend({
         console.error(error)
       } else {
         console.log(result)
-        this.$props.step3 = JSON.stringify(result)
+        this.step3 = result;
       }
     },
     async sendKin() {
@@ -73,19 +73,24 @@ export default Vue.extend({
         console.error(error)
       } else {
         console.log(result)
-        this.$props.step4 = JSON.stringify(result)
+        this.step4 = result;
       }
 
     },
   },
-  props: {
-    step1: String,
-    step2: String,
-    step3: String,
-    step4: String,
+  data() {
+    return {
+      step1: {},
+      step2: {},
+      step3: {},
+      step4: {},
+    };
   },
-  filters: {
-    json: (value: string|any) => JSON.stringify(value, null, 2)
-  }
-})
+   filters: {
+    pretty: function(value : any) {
+      if(!Object.keys(value).length) return "";
+      return JSON.stringify(value, null, 2);
+    }
+  },
+});
 </script>
