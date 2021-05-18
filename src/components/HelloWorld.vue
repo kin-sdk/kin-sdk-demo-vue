@@ -40,7 +40,7 @@ export default Vue.extend({
         console.error(error)
       } else {
         console.log(result)
-        this.$props.step1 = JSON.stringify(result)
+        this.step1 = JSON.stringify(result);
       }
     },
     async resolve() {
@@ -49,7 +49,7 @@ export default Vue.extend({
         console.error(error)
       } else {
         console.log(result)
-        this.$props.step2 = JSON.stringify(result)
+        this.step2 = JSON.stringify(result);
       }
     },
     async airdrop() {
@@ -58,7 +58,7 @@ export default Vue.extend({
         console.error(error)
       } else {
         console.log(result)
-        this.$props.step3 = JSON.stringify(result)
+        this.step3 = JSON.stringify(result);
       }
     },
     async sendKin() {
@@ -73,19 +73,21 @@ export default Vue.extend({
         console.error(error)
       } else {
         console.log(result)
-        this.$props.step4 = JSON.stringify(result)
+        this.step4 = JSON.stringify(result);
       }
 
     },
   },
-  props: {
-    step1: String,
-    step2: String,
-    step3: String,
-    step4: String,
+  data() {
+    return {
+      step1: "",
+      step2: "",
+      step3: "",
+      step4: "",
+    };
   },
-  filters: {
+   filters: {
     json: (value: string|any) => JSON.stringify(value, null, 2)
-  }
-})
+  },
+});
 </script>
